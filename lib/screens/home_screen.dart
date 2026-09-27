@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final JobProvider provider = context.watch<JobProvider>();
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: false,
         actions: [
           IconButton(
             onPressed: () {
@@ -49,38 +49,97 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout_outlined),
             tooltip: 'Logout',
           ),
         ],
       ),
+
       body: Column(
         children: [
+          // Header
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Find your next opportunity',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: colors.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Explore jobs that match your skills and interests.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Search
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
             child: TextField(
               onChanged: (value) {
                 context.read<JobProvider>().searchJobs(value);
               },
               decoration: InputDecoration(
-                hintText: 'Search by job title...',
+                hintText: 'Search job title',
                 prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: colors.surfaceContainerHighest.withValues(
+                  alpha: 0.5,
+                ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: colors.primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
           ),
 
+          // Location filter
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: DropdownButtonFormField<String>(
               initialValue: provider.selectedLocation,
               decoration: InputDecoration(
-                labelText: 'Location',
-                prefixIcon: const Icon(Icons.location_on_outlined),
+                labelText: 'Filter by location',
+                prefixIcon: const Icon(
+                  Icons.location_on_outlined,
+                ),
+                filled: true,
+                fillColor: colors.surfaceContainerHighest.withValues(
+                  alpha: 0.5,
+                ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
                 ),
               ),
               items: provider.locations.map((location) {
@@ -97,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
+          // Job count
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
             child: Row(
@@ -104,23 +164,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text(
                   'Available Jobs',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 19,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Spacer(),
                 if (!provider.isLoading)
-                  Text(
-                    '${provider.jobs.length} jobs',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colors.primaryContainer,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${provider.jobs.length} jobs',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: colors.onPrimaryContainer,
+                      ),
                     ),
                   ),
               ],
             ),
           ),
 
+          // Jobs
           Expanded(
             child: _buildJobContent(provider),
           ),
@@ -194,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       itemCount: provider.jobs.length,
       itemBuilder: (context, index) {
         final Job job = provider.jobs[index];

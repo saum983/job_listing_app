@@ -3,8 +3,6 @@
 
 A simple and responsive Flutter mobile application for browsing and applying for job opportunities.
 
-The application includes authentication screens, job search and filtering, job details, job application confirmation, mock JSON data, state management, and automated tests.
-
 ## Features
 
 - Login screen with form validation
@@ -109,24 +107,12 @@ test/
 └── widget_test.dart
 ```
 
-## Getting Started
-
-### Prerequisites
-
-Make sure Flutter is installed on your system.
-
-Check your Flutter installation:
-
-```bash
-flutter doctor
-```
-
 ### Installation
 
 Clone the repository:
 
 ```bash
-git clone <your-github-repository-url>
+git clone https://github.com/saum983/job_listing_app
 ```
 
 Go to the project directory:
@@ -165,7 +151,7 @@ The project currently includes tests for:
 
 ## Application Flow
 
-```text
+```
 Login
   ↓
 Find Jobs
@@ -179,34 +165,11 @@ Apply Now
 Application Confirmation
 ```
 
-Users can also create an account through the Signup screen and logout from the Home screen.
-
 ## Mock Data
 
 The application currently uses local mock JSON data instead of a production backend.
-
 This makes the application easy to run and test without requiring an external server.
-
 The data layer is structured so that the mock service can later be replaced with a real REST API.
-
-## Future Improvements
-
-Possible future enhancements include:
-
-* Real REST API integration
-* User authentication with backend
-* Persistent login
-* Saved/bookmarked jobs
-* Pagination
-* Application history
-* Job categories
-* Advanced filters
-* BLoC/Riverpod state management
-* Backend database integration
-
-## Author
-
-Developed as a Flutter mobile application project.
 
 ```
 ```
